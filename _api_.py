@@ -13,7 +13,7 @@ engine = create_engine(
 @app.route("/count_by_date")
 def count_by_date():
     query = """
-        SELECT 
+        SELECT
             date_part('year', cast(publishedat as date)) as ano_publicacao,
             date_part('month', cast(publishedat as date)) as mes_publicacao,
             date_part('day', cast(publishedat as date)) as dia_publicacao,
@@ -47,7 +47,10 @@ def count_by_source_author():
     """
     with engine.connect() as con:
         result = con.execute(text(query)).fetchall()
-    data = [{"source_name": row.source_name, "author": row.author, "count": row.count} for row in result]
+    data = [
+        {"source_name": row.source_name, "author": row.author, "count": row.count}
+        for row in result
+    ]
     return jsonify(data)
 
 
@@ -93,7 +96,12 @@ def keywords():
         with engine.connect() as con:
             result = con.execute(text(query))
             keyword_counts = [
-                {"date": row[0], "apple_count": row[1], "microsfot_count": row[2], "google_count": row[3]}
+                {
+                    "date": row[0],
+                    "apple_count": row[1],
+                    "microsfot_count": row[2],
+                    "google_count": row[3],
+                }
                 for row in result
             ]
 
@@ -123,5 +131,6 @@ def add_news():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-    if __name__ == "__main__":
-        app.run(debug=True)
+
+if __name__ == "__main__":
+    app.run(debug=True)
